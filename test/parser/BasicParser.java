@@ -29,9 +29,12 @@ public class BasicParser {
         .or(rule().sep("(").ast(expr0).sep(")"),
             rule().number(NumberLiteral.class),
             rule().identifier(Name.class, reserved),
-            rule().string(StringLiteral.class));
+            rule().string(StringLiteral.class)).descp("primary");
     Parser factor = rule().or(rule(NegativeExpr.class).sep("-").ast(primary),
                               primary);                            
+    
+    
+    
     Parser expr = expr0.expression(factor, operators);
 
     Parser statement0 = rule();
@@ -69,6 +72,8 @@ public class BasicParser {
         operators.add("%", 4, Operators.LEFT);
     }
     public ASTree parse(Lexer lexer) throws ParseException {
+//    	Parser neg = rule(NegativeExpr.class).sep("-").ast(primary).sep(Token.EOL).descp("negative");
         return program.parse(lexer);
+//    	return neg.parse(lexer);
     }
 }

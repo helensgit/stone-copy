@@ -12,9 +12,14 @@ public class PrimaryExpr extends ASTList{
 	}
 	
 	public static ASTree createASTree(List<ASTree> list) {
-		if(list.size() == 1)
+		if(list.size() == 1) 
 			return list.get(0);
 		else
 			return new PrimaryExpr(list);
+	}
+	
+	@Override
+	public String toString() {
+		return "primary:" + super.toString();
 	}
 }

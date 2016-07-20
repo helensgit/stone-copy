@@ -4,11 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import common.element.PrimaryExpr;
+import common.env.Environment;
+import exception.StoneException;
 
 public class ASTList extends ASTree{
 	protected List<ASTree> children;
 	
-	public ASTList(List<ASTree> children) {
+	public ASTList(List <ASTree> children) {
 		this.children = children;
 	}
 
@@ -56,6 +58,12 @@ public class ASTList extends ASTree{
 			return list.get(0);
 		else
 			return new ASTList(list);
+	}
+
+	@Override
+	public Object eval(Environment env) {
+		System.out.println(getClass());
+		throw new StoneException("astList can't eval, error at ", this);
 	}
 
 }

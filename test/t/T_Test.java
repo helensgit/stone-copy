@@ -37,4 +37,11 @@ public class T_Test {
 		}
 	}
 	
+	@Test
+	public void testS() {
+		Integer integer = new Integer(12);
+		System.out.println(integer.toString());
+		System.out.println(String.valueOf(integer));
+	}
+	
 }
