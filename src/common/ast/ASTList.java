@@ -43,7 +43,7 @@ public class ASTList extends ASTree{
 	@Override
 	public String toString() {
 		StringBuilder ret = new StringBuilder();
-		String sep = "";
+		String sep = "list:";
 		ret.append("(");
 		for(ASTree ast : children) {
 			ret.append(sep + ast.toString());
@@ -62,8 +62,13 @@ public class ASTList extends ASTree{
 
 	@Override
 	public Object eval(Environment env) {
-		System.out.println(getClass());
-		throw new StoneException("astList can't eval, error at ", this);
+//System.out.println("list eval...");
+//		Object ret = null;
+//		for(ASTree t : this) {
+//			ret = t.eval(env);
+//		}
+//		return ret;
+		throw new StoneException("astList can't eval, content:" + toString() + "  error at ", this);
 	}
 
 }

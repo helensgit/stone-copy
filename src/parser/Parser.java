@@ -17,6 +17,7 @@ import common.ast.ASTree;
 import common.ast.NumberLiteral;
 import common.ast.StringLiteral;
 import common.element.BinaryExpr;
+import common.element.DefStmnt;
 import common.element.NegativeExpr;
 import common.element.PrimaryExpr;
 import common.token.Token;
@@ -82,6 +83,13 @@ public class Parser {
 			}
 			return null;
 		}
+
+		public void insert(Parser p) {
+			Parser[] newParsers = new Parser[parsers.length + 1];
+			newParsers[0] = p;
+			System.arraycopy(parsers, 0, newParsers, 1, parsers.length);
+			parsers = newParsers;
+		}
 	}
 
 	protected static abstract class AToken extends Element {
@@ -121,6 +129,12 @@ public class Parser {
 					}
 				}
 			}
+			// System.out.print("token is: --" + t.getText() +
+			// "--  leafTokens:");
+			// for(String s :tokens) {
+			// System.out.print(" " + s);
+			// }
+			// System.out.println();
 			if (tokens.length > 0)
 				throw new ParseException(tokens[0] + " expected.", t);
 			else
@@ -155,35 +169,6 @@ public class Parser {
 		protected void find(Token t, List<ASTree> reserved) {
 		}
 	}
-
-	// protected static class Repeat extends Element {
-	//
-	// private Parser p;
-	// private boolean onlyOnce;
-	//
-	// public Repeat(Parser p, boolean once) {
-	// this.p = p;
-	// this.onlyOnce = once;
-	// }
-	//
-	// @Override
-	// public void parse(Lexer lexer, List<ASTree> reserved)
-	// throws ParseException {
-	// while (p.match(lexer)) {
-	// ASTree t = p.parse(lexer);
-	// if (t.getClass() != ASTList.class || t.numOfChildren() > 0)
-	// reserved.add(t);
-	// if (onlyOnce)
-	// break;
-	// }
-	// }
-	//
-	// @Override
-	// public boolean match(Lexer lexer) throws ParseException {
-	// return p.match(lexer);
-	// }
-	//
-	// }
 
 	protected static class Repeat extends Element {
 		protected Parser parser;
@@ -359,7 +344,11 @@ public class Parser {
 		public ASTree newInstance(Token t) {
 			ASTree ret = null;
 			try {
+				// System.out.println("newInstance:" + clazz + "--->" +
+				// t.getText());
 				Constructor constructor = clazz.getConstructor(Token.class);
+				// System.out.println("newInstance:" + clazz + "--->" +
+				// t.getText());
 				ret = (ASTree) constructor.newInstance(t);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
@@ -374,6 +363,8 @@ public class Parser {
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			}
+			// System.out.println("newInstance:" + clazz + "--->" +
+			// t.getText());
 			return ret;
 		}
 
@@ -381,9 +372,9 @@ public class Parser {
 		public ASTree make(List<ASTree> list) {
 			Method method;
 			ASTree ret = null;
-//			if (clazz == NegativeExpr.class) {
-//				System.out.println(list);
-//			}
+			// if (clazz == NegativeExpr.class) {
+			// System.out.println(list);
+			// }
 			if (list.size() == 1 && clazz == ASTList.class)
 				return list.get(0);
 			try {
@@ -507,21 +498,40 @@ public class Parser {
 
 	public ASTree parse(Lexer lexer) throws ParseException {
 		ArrayList<ASTree> ret = new ArrayList<ASTree>();
+		// if(msg.isEmpty() == false) {
+		// System.out.println(msg);
+		// }
 		for (Element element : elements) {
 			element.parse(lexer, ret);
 		}
+		// System.out.println(ret.toString());
 		return factory.make(ret);
 	}
 
-	public Parser insertChoice(Parser def) {
-		Parser temp = new Parser(this);
-		elements = new ArrayList<Parser.Element>();
-		elements.add(new OrTree(new Parser[] { def, temp }));
+	public Parser maybe(Parser p) {
+		Parser p2 = new Parser(p);
+		p2.reset();
+		elements.add(new OrTree(new Parser[] { p, p2 }));
 		return this;
 	}
 
-	public Parser maybe(Parser args) {
+	private Parser reset() {
 		elements = new ArrayList<Parser.Element>();
+		return this;
+	}
+
+	public Parser insertChoice(Parser p) {
+		// Parser temp = new Parser(this);
+		// elements = new ArrayList<Parser.Element>();
+		// elements.add(new OrTree(new Parser[] { def, temp }));
+		Element e = elements.get(0);
+		if (e instanceof OrTree)
+			((OrTree) e).insert(p);
+		else {
+			Parser otherwise = new Parser(this);
+			reset(null);
+			or(p, otherwise);
+		}
 		return this;
 	}
 

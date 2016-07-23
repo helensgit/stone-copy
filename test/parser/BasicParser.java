@@ -33,8 +33,6 @@ public class BasicParser {
     Parser factor = rule().or(rule(NegativeExpr.class).sep("-").ast(primary),
                               primary);                            
     
-    
-    
     Parser expr = expr0.expression(factor, operators);
 
     Parser statement0 = rule();
@@ -51,11 +49,15 @@ public class BasicParser {
             simple);
 
     Parser program = rule().or(statement, rule(NullStatement.class))
-                           .sep(";", Token.EOL);
+                           .sep(";", Token.EOL).descp("program");
 
     public BasicParser() {
         reserved.add(";");
         reserved.add("}");
+        reserved.add("{");
+        reserved.add(")");
+        reserved.add("(");
+        
         reserved.add(Token.EOL);
 
         operators.add("=", 1, Operators.RIGHT);
@@ -72,8 +74,6 @@ public class BasicParser {
         operators.add("%", 4, Operators.LEFT);
     }
     public ASTree parse(Lexer lexer) throws ParseException {
-//    	Parser neg = rule(NegativeExpr.class).sep("-").ast(primary).sep(Token.EOL).descp("negative");
         return program.parse(lexer);
-//    	return neg.parse(lexer);
     }
 }

@@ -16,4 +16,9 @@ public class NullStatement extends ASTList{
 		return new NullStatement(list);
 	}
 	
+	@Override
+	public String toString() {
+		return "nullStament";
+	}
+	
 }
