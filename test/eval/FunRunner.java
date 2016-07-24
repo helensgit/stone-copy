@@ -20,8 +20,8 @@ public class FunRunner {
 		NestedEnv env = new NestedEnv();
 		while (l.peek(0) != Token.EOF) {
 			ASTree ast = fp.parse(l);
-//			System.out.println("-->" + ast);
 			if (!(ast instanceof NullStatement)) {
+				System.out.println("-->" + ast);
 				System.out.println("==>" + ast.eval(env));
 			}
 		}

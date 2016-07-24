@@ -23,8 +23,8 @@ public class Arguments extends Postfix {
 
 	@Override
 	public Object eval(Environment env, Object value) {
-		if(!(value instanceof Function))
-			throw new StoneException("bad function", this);
+		if(!(value instanceof Function)) 
+			throw new StoneException("bad function: " + value.getClass(), this);
 		Function func = (Function)value;
 		ParameterList params = func.parameters();
 		if(size() != params.size()) 

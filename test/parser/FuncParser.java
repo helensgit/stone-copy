@@ -4,6 +4,7 @@ import static parser.Parser.rule;
 import common.ast.Name;
 import common.element.Arguments;
 import common.element.DefStmnt;
+import common.element.NativeArg;
 import common.element.NullStatement;
 import common.element.ParameterList;
 
@@ -14,14 +15,16 @@ public class FuncParser extends BasicParser {
     Parser paramList = rule().sep("(").maybe(params).sep(")");
     Parser def = rule(DefStmnt.class)
                      .sep("def").identifier(Name.class, reserved).ast(paramList).ast(block);
-    Parser args = rule(Arguments.class)
+//    Parser args = rule(Arguments.class)
+//                      .ast(expr).repeat(rule().sep(",").ast(expr));
+    Parser args = rule(NativeArg.class)
                       .ast(expr).repeat(rule().sep(",").ast(expr));
     Parser postfix = rule().sep("(").maybe(args).sep(")");
     
     public FuncParser() {
         reserved.add(")");
         primary.repeat(postfix);
-        simple.option(args);
+//        simple.option(args);
         program.insertChoice(def);
     }
     
