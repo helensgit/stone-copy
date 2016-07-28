@@ -8,8 +8,6 @@ import common.token.Token;
 
 import exception.ParseException;
 
-
-
 public class ParserRunner {
 
 	public static void main(String[] args) throws ParseException {

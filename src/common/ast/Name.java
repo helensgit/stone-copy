@@ -25,6 +25,6 @@ public class Name extends ASTLeaf {
 	
 	@Override
 	public String toString() {
-		return "name:" + super.toString();
+		return " name:" + super.toString();
 	}
 }

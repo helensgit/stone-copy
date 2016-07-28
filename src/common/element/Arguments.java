@@ -23,7 +23,7 @@ public class Arguments extends Postfix {
 
 	@Override
 	public Object eval(Environment env, Object value) {
-		if(!(value instanceof Function)) 
+		if(!(value instanceof Function))
 			throw new StoneException("bad function: " + value.getClass(), this);
 		Function func = (Function)value;
 		ParameterList params = func.parameters();
@@ -32,7 +32,7 @@ public class Arguments extends Postfix {
 		Environment newEnv = func.makeEnv();
 		int num = 0;
 		for(ASTree t: this) 
-			params.eval((EnvEx)newEnv, num++,	((ASTree)t).eval(env));
+			params.eval((EnvEx)newEnv, num++, ((ASTree)t).eval(env));
 		return (func.body()).eval(newEnv);
 	}
 	

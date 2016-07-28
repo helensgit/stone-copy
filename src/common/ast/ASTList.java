@@ -68,6 +68,9 @@ public class ASTList extends ASTree{
 //			ret = t.eval(env);
 //		}
 //		return ret;
+		if(this.getClass() != ASTList.class) {
+			throw new StoneException("" + this.getClass() + " don't have eval");
+		}
 		throw new StoneException("astList can't eval, content:" + toString() + "  error at ", this);
 	}
 

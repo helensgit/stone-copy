@@ -12,12 +12,11 @@ public class T_Test {
 	private Method method = null;
 	public static void test(double i) {
 		System.out.println("test double");
-	}	
+	}
 	
 	public static void test() {
 		System.out.println("no argument");
 	}
-	
 	
 	@Test
 	public void testReflect() {
@@ -43,5 +42,10 @@ public class T_Test {
 		System.out.println(integer.toString());
 		System.out.println(String.valueOf(integer));
 	}
-	
+
+	@Test
+	public void testT() {
+		System.out.println("Hello");
+		
+	}
 }

@@ -344,8 +344,7 @@ public class Parser {
 		public ASTree newInstance(Token t) {
 			ASTree ret = null;
 			try {
-				// System.out.println("newInstance:" + clazz + "--->" +
-				// t.getText());
+//				 System.out.println("newInstance:" + clazz + "--->" + t.getText());
 				Constructor constructor = clazz.getConstructor(Token.class);
 				// System.out.println("newInstance:" + clazz + "--->" +
 				// t.getText());
@@ -498,13 +497,9 @@ public class Parser {
 
 	public ASTree parse(Lexer lexer) throws ParseException {
 		ArrayList<ASTree> ret = new ArrayList<ASTree>();
-		// if(msg.isEmpty() == false) {
-		// System.out.println(msg);
-		// }
 		for (Element element : elements) {
 			element.parse(lexer, ret);
 		}
-		// System.out.println(ret.toString());
 		return factory.make(ret);
 	}
 
