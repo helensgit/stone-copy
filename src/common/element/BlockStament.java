@@ -4,6 +4,7 @@ import java.util.List;
 
 import common.ast.ASTList;
 import common.ast.ASTree;
+import common.env.Environment;
 
 public class BlockStament extends ASTList{
 
@@ -13,10 +14,20 @@ public class BlockStament extends ASTList{
 	
 	@Override
 	public String toString() {
-		return super.toString();
+		return "block:" + super.toString();
 	}
 	
 	public static ASTree createASTree(List<ASTree> list) {
 		return new BlockStament(list);
+	}
+	
+	@Override
+	public Object eval(Environment env) {
+		Object ret = null;
+		for(ASTree t : this) {
+			if(!(t instanceof NullStatement))
+			ret = t.eval(env);
+		}
+		return ret;
 	}
 }

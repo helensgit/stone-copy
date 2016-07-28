@@ -29,9 +29,10 @@ public class BasicParser {
         .or(rule().sep("(").ast(expr0).sep(")"),
             rule().number(NumberLiteral.class),
             rule().identifier(Name.class, reserved),
-            rule().string(StringLiteral.class));
+            rule().string(StringLiteral.class)).descp("primary");
     Parser factor = rule().or(rule(NegativeExpr.class).sep("-").ast(primary),
                               primary);                            
+    
     Parser expr = expr0.expression(factor, operators);
 
     Parser statement0 = rule();
@@ -48,11 +49,15 @@ public class BasicParser {
             simple);
 
     Parser program = rule().or(statement, rule(NullStatement.class))
-                           .sep(";", Token.EOL);
+                           .sep(";", Token.EOL).descp("program");
 
     public BasicParser() {
         reserved.add(";");
         reserved.add("}");
+        reserved.add("{");
+        reserved.add(")");
+        reserved.add("(");
+        
         reserved.add(Token.EOL);
 
         operators.add("=", 1, Operators.RIGHT);

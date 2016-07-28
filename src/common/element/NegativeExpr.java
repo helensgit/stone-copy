@@ -4,6 +4,8 @@ import java.util.List;
 
 import common.ast.ASTList;
 import common.ast.ASTree;
+import common.env.Environment;
+import exception.StoneException;
 
 public class NegativeExpr extends ASTList{
 
@@ -12,7 +14,6 @@ public class NegativeExpr extends ASTList{
 	}
 	
 	public static ASTree createASTree(List <ASTree> list) {
-		System.out.println("Create primary");
 		return new NegativeExpr(list);
 	}
 	
@@ -22,7 +23,15 @@ public class NegativeExpr extends ASTList{
 	
 	@Override
 	public String toString() {
-		System.out.println("===================");
 		return "-" + operand();
+	}
+	
+	@Override
+	public Object eval(Environment env) {
+		Object ret = operand().eval(env);
+		if(!(ret instanceof Integer)) 
+			throw new StoneException("bad type for - ", this);
+		else
+			return -1 * (Integer)ret;
 	}
 }

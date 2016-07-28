@@ -3,7 +3,9 @@ package common.ast;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import common.env.Environment;
 import common.token.Token;
+import exception.StoneException;
 
 public class ASTLeaf extends ASTree {
 	private static ArrayList <ASTree> empty = new ArrayList<ASTree>();
@@ -41,4 +43,9 @@ public class ASTLeaf extends ASTree {
 	public String toString() {
 		return token.getText();
 	}
+
+	@Override
+	public Object eval(Environment env) {
+		throw new StoneException("astLeaf can't eval , error at: ", this);
+	};
 }

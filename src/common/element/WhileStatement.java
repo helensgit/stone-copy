@@ -4,6 +4,7 @@ import java.util.List;
 
 import common.ast.ASTList;
 import common.ast.ASTree;
+import common.env.Environment;
 
 public class WhileStatement extends ASTList {
 
@@ -30,5 +31,17 @@ public class WhileStatement extends ASTList {
 		return new WhileStatement(list);
 	}
 
+	@Override
+	public Object eval(Environment env) {
+		Object ret = null;
+		while(true) {
+			Object condition = condition().eval(env);
+			if((condition instanceof Integer) && (Integer)condition == BinaryExpr.FALSE) {
+				break;
+			}
+			ret = body().eval(env);
+		}
+		return ret;
+	}
 
 }
